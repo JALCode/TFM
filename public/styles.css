@@ -1,0 +1,77 @@
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+video.video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.row-container {
+  background-color: black;
+  margin: 0;
+}
+.row-container > canvas{
+  border: 1px solid aliceblue !important;
+}
+.invisible {
+  display: none;
+  visibility: hidden;
+}
+
+
+#mainContainer {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+}
+
+@media (orientation:portrait){
+  #mainContainer {
+    display: block;
+  }
+  #classContainer {
+    margin: 0;
+    height: 50%;
+    top: 0;
+    left: 0;
+    overflow: auto;
+  }
+  
+}
+@media (orientation:landscape){
+  #mainContainer {
+    display: flex;
+  }
+  #classContainer {
+    margin: 0;
+    width: 50%;
+    top: 0;
+    left: 0;
+    overflow: auto;
+  }  
+}
+
+
+

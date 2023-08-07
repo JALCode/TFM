@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VR User</title>
+    <meta charset="UTF-8" />
+    <script type="importmap">
+			{
+			  "imports": {
+				"three": "https://unpkg.com/three/build/three.module.js",
+				"three/": "https://unpkg.com/three/",
+        "troika-three-text/": "https://unpkg.com/troika-three-text/",
+        "troika-three-utils": "https://unpkg.com/troika-three-utils/dist/troika-three-utils.esm.js",
+        "troika-worker-utils": "https://unpkg.com/troika-worker-utils/dist/troika-worker-utils.esm.js",
+        "bidi-js": "https://unpkg.com/bidi-js/dist/bidi.min.mjs",
+        "webgl-sdf-generator": "https://unpkg.com/webgl-sdf-generator/dist/index.js"
+			  }
+			}
+		</script>
+  </head>
+  <body style="margin:0px">
+    <div id="container"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="broadcast.js"></script>
+    <script src="index.js" type="module"></script>
+    <script src="../../otherscripts/globalUtils.js"></script>
+  </body>
+</html>
