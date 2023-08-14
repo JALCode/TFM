@@ -126,6 +126,21 @@ class XRHandCustom extends Object3D{
 		return points.concat(quaternions)
 	}
 
+	getJoints(val){
+		let handPositionJSON = {};
+			handPositionJSON["handness"] = val;
+		for(const j of this.bones){
+			handPositionJSON[j.jointName] = {}
+			handPositionJSON[j.jointName]["p"] = reduceFloatArray(j.position.toArray());
+			handPositionJSON[j.jointName]["q"] = reduceFloatArray(j.quaternion.toArray());
+		}
+		return handPositionJSON;
+	}
+
+	getCenter(){
+		return this.bones[0].position.toArray().map((value, index) => (value + this.bones[14].position.toArray()[index])/2)
+	}
+
 
 	// updateMesh() {
 

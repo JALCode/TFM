@@ -31,13 +31,13 @@
             <button class="btn btn-primary btn-sm" id="newClassBtn">New Class</button>
             <button class="btn btn-primary btn-sm" id="trainBtn">train</button>
             <button class="btn btn-primary btn-sm" id="predictBtn" disabled>predict</button>
-            <button class="btn btn-primary btn-sm" id="saveBtn" onclick="saveModel()">save</button>
+            <button class="btn btn-primary btn-sm" id="saveBtn" onclick="saveState()">save</button>
           </div>
           <div class="d-flex p-2"> 
             <div class="col-sm-6">
               <input class="form-control" type="file" id="fileModel">
             </div>
-            <button class="btn btn-primary btn-sm col-sm-6" id="load" onclick="loadModel()">load</button>
+            <button class="btn btn-primary btn-sm col-sm-6" id="load" onclick="loadState()">load</button>
         </div>
          
           <div class="form-check form-switch invisible">
@@ -53,6 +53,7 @@
       <div id="classExample" class="invisible">
         <button class="btn btn-secondary btn-sm" id="snap">add example</button>
         <button class="btn btn-secondary btn-sm" id="snapLeft">add example left</button>
+        <button class="btn btn-danger btn-sm" id="remove">clear class</button>
         <button class="btn btn-dark btn-sm" id="hide">hide</button>
         <div class="row-container"></div>
       </div>

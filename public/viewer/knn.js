@@ -67,6 +67,7 @@ async function addClass(hand, classNumber) {
 async function addExamples(tensorList) {
   let keys = Object.keys(tensorList);
   for(let i=0; i<keys.length;i++){
+    //EDIT
     let list = tensorList[keys[i]];
     for(let j=0; j<list.length;j++){
       classifier.addExample(tf.tensor(list[j]), keys[i]);

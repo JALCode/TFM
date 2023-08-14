@@ -1,4 +1,4 @@
-const joints = [
+const joint_names = [
     'wrist',
     'thumb-metacarpal',
     'thumb-phalanx-proximal',
@@ -141,10 +141,10 @@ function getMirrorString(camera, h1, h2){
     }else{
         mirrorJSON[h1.name]={}
     }
-    if(h1.visible){
+    if(h2.visible){
         mirrorJSON[h2.name]=handToPosition(h2);
     }else{
-        mirrorJSON[h1.name]={}
+        mirrorJSON[h2.name]={}
     }
 
     return JSON.stringify(mirrorJSON)
@@ -195,9 +195,9 @@ function copyHand(h1, h1copy){
 }
 
 
-function getCenterOfHand(hand){
-    return hand.bones[0].position.toArray().map((value, index) => (value + hand.bones[14].position.toArray()[index])/2)
-}
+// function getCenterOfHand(hand){
+//     return hand.bones[0].position.toArray().map((value, index) => (value + hand.bones[14].position.toArray()[index])/2)
+// }
 
 function cloneCanvas(oldCanvas) {
 
@@ -221,4 +221,29 @@ function cloneCanvas(oldCanvas) {
     }, false)
     //return the new canvas
     return newCanvas;
+}
+
+function getTensorFromJoints(joints,mirror=false){
+    let points = [];
+    let quaternions = [];
+    let basePos = joints[joint_names[0]]["p"];
+    let baseRot = joints[joint_names[0]]["q"];
+
+    for ( let i = 1; i < joint_names.length; i ++ ) {
+            const jn = joint_names[ i ];
+
+            if ( joints[jn] ) {
+                // let p = subtractArrays(joints[jn]["p"],basePos);
+                let q = subtractArrays(joints[jn]["q"],baseRot);
+                if(mirror){
+                    // p = mirrorVector(p);
+                    q = mirrorQuaterion(q);
+                }
+                // points = points.concat(p);
+                quaternions = quaternions.concat(q);
+                
+            }
+
+        }
+    return points.concat(quaternions)
 }

@@ -189,13 +189,38 @@ function snap(val=0, mirror=false){
 	let tensor = null;
 	if (val==1){
 		copyHand(hand2, mirrorHand2);
-		v = getCenterOfHand(mirrorHand2);
+		v = mirrorHand2.getCenter();
 		mirrorHand2.visible = true;
 		mirrorHand1.visible = false;
-		tensor = mirrorHand2.getTensor(mirror);
+		tensor = mirrorHand2.getJoints(val);
 	}else{
 		copyHand(hand1, mirrorHand1);
-		v = getCenterOfHand(mirrorHand1);
+		v = mirrorHand1.getCenter();
+		mirrorHand2.visible = false;
+		mirrorHand1.visible = true;
+		tensor = mirrorHand1.getJoints(val);
+	}
+	handCamera.position.fromArray(v);
+	handCamera.position.z = handCamera.position.z + 0.4;
+	handCamera.lookAt(v[0],v[1],v[2])
+	handRenderer.xr.updateCamera( handCamera );
+	handRenderer.render( mirrorScene, handCamera );
+
+	return tensor;
+}
+
+function load(joints, val=0){
+	let v = [0,0,0];
+	let tensor = null;
+	if (val==1){
+		mirrorHand2.setBonesFromJoints(joints);
+		v = mirrorHand2.getCenter();
+		mirrorHand2.visible = true;
+		mirrorHand1.visible = false;
+		tensor = mirrorHand2.getTensor();
+	}else{
+		mirrorHand1.setBonesFromJoints(joints);
+		v = mirrorHand1.getCenter();
 		mirrorHand2.visible = false;
 		mirrorHand1.visible = true;
 		tensor = mirrorHand1.getTensor();
@@ -210,3 +235,4 @@ function snap(val=0, mirror=false){
 }
 
 handRenderer.snap = snap;
+handRenderer.load = load;
