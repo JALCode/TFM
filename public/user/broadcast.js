@@ -98,8 +98,11 @@ socket.on("connect", () => {
 
 
 function send(data){
+  let sent = false;
   for(id of Object.keys(peerConnections)){
     if(dataChannels[id] && dataChannels[id].readyState == "open")
     dataChannels[id].send(data)
+    sent = true;
   }
+  return sent;
 }

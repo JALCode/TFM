@@ -65,6 +65,7 @@ async function addClass(hand, classNumber) {
 }
 
 async function addExamples(tensorList) {
+  classifier.clearAllClasses();
   let keys = Object.keys(tensorList);
   for(let i=0; i<keys.length;i++){
     //EDIT

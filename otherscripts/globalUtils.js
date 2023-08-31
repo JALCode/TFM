@@ -180,7 +180,7 @@ function setFromString(string,camera, h1, h2){
     }
     if(Object.keys(mirrorJSON["left"]).length>0){
         h2.setBonesFromJoints(mirrorJSON["left"])
-        h1.visible = true;
+        h2.visible = true;
     }else{
         h2.visible = false;
     }
@@ -213,10 +213,10 @@ function cloneCanvas(oldCanvas) {
     //apply the old canvas to the new one
     context.drawImage(oldCanvas, 0, 0);
     newCanvas.addEventListener('click', (event) => { 
-        let parent = event.target.parentNode;
-        let index = Array.prototype.indexOf.call(parent.children,event.target);
-        event.target.remove();
-        tensorList[parent.parentNode.getAttribute("id")].splice(index,1);
+        let row = event.target.parentNode.parentNode;
+        let index = Array.prototype.indexOf.call(row.children,event.target.parentNode);
+        event.target.parentNode.remove();
+        tensorList[row.parentNode.getAttribute("id")].splice(index,1);
         // console.log("Removed "+index);
     }, false)
     //return the new canvas
@@ -225,25 +225,41 @@ function cloneCanvas(oldCanvas) {
 
 function getTensorFromJoints(joints,mirror=false){
     let points = [];
-    let quaternions = [];
-    let basePos = joints[joint_names[0]]["p"];
-    let baseRot = joints[joint_names[0]]["q"];
+    // let quaternions = [];
+    // let basePos = joints[joint_names[0]]["p"];
+    // let baseRot = joints[joint_names[0]]["q"];
 
-    for ( let i = 1; i < joint_names.length; i ++ ) {
-            const jn = joint_names[ i ];
+    // for ( let i = 1; i < joint_names.length; i ++ ) {
+    //         const jn = joint_names[ i ];
+
+    //         if ( joints[jn] ) {
+    //             // let p = subtractArrays(joints[jn]["p"],basePos);
+    //             let q = subtractArrays(joints[jn]["q"],baseRot);
+    //             if(mirror){
+    //                 // p = mirrorVector(p);
+    //                 q = mirrorQuaterion(q);
+    //             }
+    //             //  points = points.concat(p);
+    //             // quaternions = quaternions.concat(q);
+    //             points = points.concat(q);
+                
+    //         }
+
+    // }
+    ///BASE COMPLETE
+    for ( let i = 0; i < joint_names.length; i ++ ) {
+        const jn = joint_names[ i ];
 
             if ( joints[jn] ) {
-                // let p = subtractArrays(joints[jn]["p"],basePos);
-                let q = subtractArrays(joints[jn]["q"],baseRot);
+                let q = joints[jn]["q"];
                 if(mirror){
-                    // p = mirrorVector(p);
                     q = mirrorQuaterion(q);
                 }
-                // points = points.concat(p);
-                quaternions = quaternions.concat(q);
-                
+                points = points.concat(q);
             }
+    }
 
-        }
-    return points.concat(quaternions)
+    return points
+    // return points.concat(quaternions);
+
 }

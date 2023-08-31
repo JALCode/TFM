@@ -78,7 +78,7 @@ class XRHandCustom extends Object3D{
 
 			} );
 			this.bones[0].add(this.text);
-			this.text.position.set(-0.05,0.25,0);
+			// this.text.position.set(-0.05,0.25,0);
 			this.text.sync();
 		} );
 			
@@ -103,27 +103,43 @@ class XRHandCustom extends Object3D{
 
 	getTensor(mirror = false){
 		let points = [];
-		let quaternions = [];
-		let basePos = this.bones[0].position.toArray();
-		let baseRot = this.bones[0].quaternion.toArray();
+		// let quaternions = [];
+		// let basePos = this.bones[0].position.toArray();
+		// let baseRot = this.bones[0].quaternion.toArray();
 
-		for ( let i = 1; i < this.bones.length; i ++ ) {
-				const bone = this.bones[ i ];
+		// for ( let i = 1; i < this.bones.length; i ++ ) {
+		// 		const bone = this.bones[ i ];
 
-				if ( bone ) {
-					// let p = subtractArrays(bone.position.toArray(),basePos);
-					let q = subtractArrays(bone.quaternion.toArray(),baseRot);
-					if(mirror){
-						// p = mirrorVector(p);
-						q = mirrorQuaterion(q);
-					}
-					// points = points.concat(p);
-					quaternions = quaternions.concat(q);
+		// 		if ( bone ) {
+		// 			// let p = subtractArrays(bone.position.toArray(),basePos);
+		// 			let q = subtractArrays(bone.quaternion.toArray(),baseRot);
+		// 			if(mirror){
+		// 				// p = mirrorVector(p);
+		// 				q = mirrorQuaterion(q);
+		// 			}
+		// 			// points = points.concat(p);
+		// 			quaternions = quaternions.concat(q);
 					
-				}
+		// 		}
 	
+		// 	}
+		// return points.concat(quaternions)
+
+		for ( let i = 0; i < this.bones.length; i ++ ) {
+			const bone = this.bones[ i ];
+
+			if ( bone ) {
+				let q = bone.quaternion.toArray();
+
+				if(mirror){
+					q = mirrorQuaterion(q);
+				}
+
+				points = points.concat(q);
 			}
-		return points.concat(quaternions)
+
+		}
+		return points
 	}
 
 	getJoints(val){

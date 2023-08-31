@@ -4,6 +4,7 @@ import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerM
 import { OculusHandModel } from 'three/examples/jsm/webxr/OculusHandModel.js';
 import { createText } from 'three/examples/jsm/webxr/Text2D.js';
 import { World, System, Component, TagComponent, Types } from 'three/examples/jsm/libs/ecsy.module.js';
+import {Text} from 'troika-three-text/src/Text.js'
 
 
 class Object3D extends Component { }
@@ -52,12 +53,12 @@ class ButtonSystem extends System {
 
 			// load a sound and set it as the Audio object's buffer
 			const audioLoader = new THREE.AudioLoader();
-			audioLoader.load( 'sounds/button-press.ogg', function ( buffer ) {
+			audioLoader.load( '../sounds/button-press.ogg', function ( buffer ) {
 
 				buttonPressSound.setBuffer( buffer );
 
 			} );
-			audioLoader.load( 'sounds/button-release.ogg', function ( buffer ) {
+			audioLoader.load( '../sounds/button-release.ogg', function ( buffer ) {
 
 				buttonReleaseSound.setBuffer( buffer );
 
@@ -447,24 +448,42 @@ function init() {
 	const consoleGeometry = new THREE.BoxGeometry( 0.15, 0.12, 0.15 );
 	const consoleMaterial = new THREE.MeshPhongMaterial( { color: 0x595959 } );
 	const consoleMesh = new THREE.Mesh( consoleGeometry, consoleMaterial );
-	consoleMesh.position.set( 0, 0.7, - 0.5 );
+	consoleMesh.position.set( 0, 1, - 0.5 );
 	consoleMesh.castShadow = true;
 	consoleMesh.receiveShadow = true;
 	scene.add( consoleMesh );
-	const sendButton = makeButtonMesh( 0.08, 0.1, 0.08, 0xff0505 );
+
+	const text1 = new Text();
+	text1.text = "Start";
+	text1.fontSize = 0.05;
+	text1.position.set(-0.055,0.05,0.1);
+
+	
+	const sendButton = makeButtonMesh( 0.08, 0.1, 0.08, 0x05ff05 );
 	sendButton.position.set( 0, 0.04, 0 );
 	consoleMesh.add( sendButton );
-
+	consoleMesh.add( text1 );
+	text1.sync();
 	const sendEntity = world.createEntity();
 	sendEntity.addComponent( Pressable );
 	sendEntity.addComponent( Object3D, { object: sendButton } );
 	const sendAction = function () {
 
 		streamBool = !streamBool;
-
+		// consoleMesh.visible = !streamBool;
+		if(sendButton.material.color.getHex()== 0xff0505){
+			sendButton.material.color.setHex( 0x05ff05);
+			text1.text = "Start";
+		}else{
+			sendButton.material.color.setHex( 0xff0505);
+			text1.text = "Stop";
+		}
 	};
 	sendEntity.addComponent( Button, { action: sendAction, surfaceY: 0.05, fullPressDistance: 0.02 } );
 
+	window.cm = consoleMesh;
+	window.text = text1;
+	
 
 	const itEntity = world.createEntity();
 	itEntity.addComponent( HandsInstructionText );
@@ -494,15 +513,20 @@ function animate() {
 
 function render() {
 	
-  const delta = clock.getDelta();
+	const delta = clock.getDelta();
 
-  for ( let i = 0; i < mixers.length; i ++ ) {
+	for ( let i = 0; i < mixers.length; i ++ ) {
 
-    mixers[ i ].update( delta );
+		mixers[ i ].update( delta );
 
-  }
+	}
+	let active = false;
+	if(streamBool) active = send(getMirrorString(camera,h1,h2));
 
-  if(streamBool) send(getMirrorString(camera,h1,h2));
+	// if(!active) {
+	// 	console.visible = true;
+	// 	streamBool = false;
+	// }
 
 	const elapsedTime = clock.elapsedTime;
 	renderer.xr.updateCamera( camera );

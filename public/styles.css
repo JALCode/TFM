@@ -23,13 +23,15 @@ body {
   right: 0;
 }
 
-.row-container {
-  background-color: black;
-  margin: 0;
+.class-container {
+  background-color: var(--bs-body-color);
+  border-radius: var(--bs-border-radius-sm);
 }
-.row-container > canvas{
-  border: 1px solid aliceblue !important;
+.row-container > div{
+  border: 1px solid var(--bs-body-color) !important;
+  display: inline-table !important;
 }
+
 .invisible {
   display: none;
   visibility: hidden;
@@ -51,7 +53,7 @@ body {
   #mainContainer {
     display: block;
   }
-  #classContainer {
+  #controlContainer {
     margin: 0;
     height: 50%;
     top: 0;
@@ -64,7 +66,7 @@ body {
   #mainContainer {
     display: flex;
   }
-  #classContainer {
+  #controlContainer {
     margin: 0;
     width: 50%;
     top: 0;
@@ -75,3 +77,33 @@ body {
 
 
 
+
+.display-background {
+  opacity: 1;
+  display: block;
+  transition: .3s ease;
+  backface-visibility: hidden;
+}
+
+.display-overlay {
+  transition: .3s ease;
+  opacity: 0;
+  position: absolute;
+
+}
+
+.display:hover .display-background {
+  opacity: 0.5;
+}
+
+.display:hover .display-overlay {
+  opacity: 1;
+}
+
+.form-select{
+  width: fit-content !important;
+  display: inline-flex !important;
+}
+.form-check{
+  display: inline-flex !important;
+}

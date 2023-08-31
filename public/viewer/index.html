@@ -21,41 +21,57 @@
 			  }
 			}
 		</script>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
   </head>
   <body>
     <!-- <video playsinline autoplay muted></video> -->
     <div id="mainContainer">
-      <div id="classContainer">
+      <div id="controlContainer">
         <div>
-          <div class="btn-group p-2"> 
-            <button class="btn btn-primary btn-sm" id="newClassBtn">New Class</button>
-            <button class="btn btn-primary btn-sm" id="trainBtn">train</button>
-            <button class="btn btn-primary btn-sm" id="predictBtn" disabled>predict</button>
-            <button class="btn btn-primary btn-sm" id="saveBtn" onclick="saveState()">save</button>
-          </div>
           <div class="d-flex p-2"> 
             <div class="col-sm-6">
               <input class="form-control" type="file" id="fileModel">
             </div>
-            <button class="btn btn-primary btn-sm col-sm-6" id="load" onclick="loadState()">load</button>
-        </div>
-         
-          <div class="form-check form-switch invisible">
-            <input class="form-check-input" id="dualHand" checked = "true" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Dual hand detection</label>
+            <button class="btn btn-primary btn-sm col-sm-6" id="load" onclick="loadState()">Load dataset</button>
+          </div>
+          <div class="invisible"> 
+            <div class="col-sm-6">
+              <input class="form-control" type="file" id="fileTest">
+            </div>
+            <button class="btn btn-primary btn-sm col-sm-6" id="test" onclick="predictFile()">test</button>
+          </div>
+          <div class="btn-group p-2" style="display: flex !important;"> 
+            <button class="btn btn-primary btn-sm" id="newClassBtn">New Class</button>
+            <button class="btn btn-primary btn-sm" id="trainBtn">Train</button>
+            <button class="btn btn-primary btn-sm" id="predictBtn" disabled>Classify once</button>
+            <button class="btn btn-primary btn-sm" id="saveBtn" onclick="saveState()">Save model</button>
+          </div>
+          
+        
+        <div class="m-2">
+          <div class=" invisible">
+            <input class="form-check-input" id="dualHand" checked = "true" type="checkbox" role="switch">
+            <label class="form-check-label" for="dualHand">Dual hand detection</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" id ="predict" type="checkbox" role="switch" id="flexSwitchCheckDefault" disabled>
-            <label class="form-check-label" for="flexSwitchCheckDefault">predict</label>
+            <input class="form-check-input" id ="predict" type="checkbox" role="switch" disabled>
+            <label class="form-check-label" for="predict">Classify online</label>
           </div>
+          <select class="form-select" id="selectedHand" disabled>
+            <option selected value="0">Right hand</option>
+            <option value="1">Left hand</option>
+          </select> 
+          <div class="invisible" id="predictedText" style="display: inline-block;"><h3 style="display: inline-block;">Predicted class is <h2 style="display: inline-block;" class="ms-2" ><strong id="predictedClass"> - </strong></h2></h3></div>
+        </div>
         </div>
       </div>
-      <div id="classExample" class="invisible">
+      <div id="classExample" class="invisible class-container">
+        <p id="className" class="text-light m-2 d-inline">0</p>
         <button class="btn btn-secondary btn-sm" id="snap">add example</button>
         <button class="btn btn-secondary btn-sm" id="snapLeft">add example left</button>
         <button class="btn btn-danger btn-sm" id="remove">clear class</button>
-        <button class="btn btn-dark btn-sm" id="hide">hide</button>
-        <div class="row-container"></div>
+        <button class="btn btn-dark btn-sm" id="hide" style="float: right;">hide</button>
+        <div class="row-container" id="exampleRow"></div>
       </div>
     </div>
 
@@ -65,6 +81,14 @@
     <script src="knn.js"></script>
     <script src="index.js" type="module"></script>
     <script src="../../otherscripts/globalUtils.js"></script>
-    <canvas class="invisible" width="900" height="900" id="display" style=" width: 64px; height: 64px;"></canvas>
+    <canvas class="invisible" width="900" height="900"  style=" width: 64px; height: 64px;" id="display"></canvas>
+    <div class="invisible display col" id="displayContainer">
+      <div style="position: relative;"><img class="display-overlay" src="../images/vector-trash.png" alt="Delete" style=" width: 64px; height: 64px;"></div>
+
+      
+    </div>
+   
+    
   </body>
+
 </html>

@@ -16,16 +16,17 @@ const clock = new THREE.Clock();
 let camera, scene, renderer, handRenderer;
 let mirrorScene;
 let handCamera;
-let text1 = new Text();
-let text2 = new Text();
+
 
 let hand1, hand2;
 let mirrorHand1, mirrorHand2;
 
 
 const canvasRender = document.querySelector("#display");
-const classContainer = document.querySelector("#classContainer");
+const controlContainer = document.querySelector("#controlContainer");
 const predictCheck = document.querySelector(".form-check-input#predict");
+const selectedHand = document.querySelector("#selectedHand");
+
 init();
 animate();
 
@@ -41,7 +42,7 @@ function init() {
 	mirrorScene = new THREE.Scene();
 	mirrorScene.background = new THREE.Color( 0x000000 );
 	// viewerSize = Math.min(window.innerWidth, window.innerHeight, Math.max(window.innerWidth/2, window.innerHeight/2));
-	camera = new THREE.PerspectiveCamera( 90, classContainer.clientWidth / classContainer.clientHeight, 0.1, 100 );
+	camera = new THREE.PerspectiveCamera( 90, controlContainer.clientWidth / controlContainer.clientHeight, 0.1, 100 );
 	camera.position.set( 0, 1.2, 0.3 );
 	handCamera = new THREE.PerspectiveCamera( 30, 1, 0.1, 100 );
 	handCamera.position.set( 0, 1.2, 0.3 );
@@ -73,7 +74,7 @@ function init() {
 	renderer = new THREE.WebGLRenderer( { antialias: true , preserveDrawingBuffer:true} );
 	handRenderer = new THREE.WebGLRenderer( { canvas: canvasRender , preserveDrawingBuffer:true} );
 	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( classContainer.clientWidth, classContainer.clientHeight );
+	renderer.setSize( controlContainer.clientWidth, controlContainer.clientHeight );
 	renderer.outputColorSpace = THREE.SRGBColorSpace;
 	renderer.shadowMap.enabled = true;
 	renderer.xr.enabled = true;
@@ -91,8 +92,7 @@ function init() {
 	window.camera = camera;
 	window.handCamera = handCamera;
 	renderer.domElement.setAttribute("id","webXRCanvas")
-	window.t1 = text1;
-	window.t2 = text2;
+
 
 	
 
@@ -117,7 +117,7 @@ function init() {
 	// Hand 2
 
 	mirrorHand2 = new XRHandCustom( "left" );
-	mirrorHand2.name = "hand2"
+	mirrorHand2.name = "mirrorHand1"
 	mirrorScene.add( mirrorHand2 );
 	window.mirrorHand1 = mirrorHand1;
 	window.mirrorHand2 = mirrorHand2;
@@ -127,21 +127,23 @@ function init() {
 	 window.h1 = hand1;
 	 window.h2 = hand2;
 
-	const tkGeometry = new THREE.TorusKnotGeometry( 0.5, 0.2, 200, 32 );
-	const tkMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff } );
-	tkMaterial.metalness = 0.8;
-	const torusKnot = new THREE.Mesh( tkGeometry, tkMaterial );
-	torusKnot.position.set( 0, 1, - 1 );
-	scene.add( torusKnot );
+	// const tkGeometry = new THREE.TorusKnotGeometry( 0.5, 0.2, 200, 32 );
+	// const tkMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+	// tkMaterial.metalness = 0.8;
+	// const torusKnot = new THREE.Mesh( tkGeometry, tkMaterial );
+	// torusKnot.position.set( 0, 1, - 1 );
+	// scene.add( torusKnot );
 
+	// const t1 = new Text();
+	// t1.Text = "Press to start";
+	// t1.fontSize = 0.2;
+	// t1.position.set( 0, 0.1, -0.5 );
+	// scene.add(t1)
+	// window.t = t1;
 
 	world.registerComponent( Object3D );
 
-	text1.text = "MANO 1"
-	text1.fontSize = 0.2;
-	// text1.position = h1.bones[0].position;
 
-	scene.add(text1);
 
 	window.addEventListener( 'resize', onWindowResize );
 	screen.orientation.addEventListener("change", onWindowResize);
@@ -149,11 +151,11 @@ function init() {
 
 function onWindowResize() {
 
-	camera.aspect = classContainer.clientWidth / classContainer.clientHeight;
+	camera.aspect = controlContainer.clientWidth / controlContainer.clientHeight;
 	camera.updateProjectionMatrix();
 
 	// viewerSize = Math.min(window.innerWidth, window.innerHeight, Math.max(window.innerWidth/2, window.innerHeight/2));
-	renderer.setSize( classContainer.clientWidth, classContainer.clientHeight );
+	renderer.setSize( controlContainer.clientWidth, controlContainer.clientHeight );
 	
 }
 
@@ -178,7 +180,7 @@ function render() {
 	copyHand(hand2, mirrorHand2, 0);
 
 	if (predictCheck.checked){
-		predict();
+		predict(Number(selectedHand.value));
 	}
 }
 
